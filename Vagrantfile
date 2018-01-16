@@ -38,19 +38,18 @@ Vagrant.configure("2") do |config|
     apt-get upgrade -y
     apt-get autoremove -y
     apt-get update && apt-get install -y maven wget curl syslog-ng-core unzip
-	service syslog-ng start
-	mkdir /usr/share/gradle 
-	cd /usr/share/gradle
-	wget https://services.gradle.org/distributions/gradle-4.4-bin.zip 
-	unzip gradle-4.4-bin.zip
-	rm /usr/share/gradle/gradle-4.4-bin.zip
-	mv /usr/share/gradle/gradle-4.4/ /usr/share/gradle/
-	rm -rf /usr/share/gradle/gradle-4.4/
-	echo -n  >  /etc/profile.d/gradle.sh
-	chmod +x /etc/profile.d/gradle.sh
-  	echo 'export GRADLE_HOME=$HOME/gradle'  >> /etc/profile.d/gradle.sh
-  	echo 'export PATH=$PATH:$GRADLE_HOME/bin' >> /etc/profile.d/gradle.sh
-	gradle
+    service syslog-ng start
+    mkdir /usr/share/gradle 
+    cd /usr/share/gradle && wget https://services.gradle.org/distributions/gradle-4.4-bin.zip && unzip gradle-4.4-bin.zip /usr/share/gradle
+
+    #rm /usr/share/gradle/gradle-4.4-bin.zip
+    #mv /usr/share/gradle/gradle-4.4/ /usr/share/gradle/
+    #rm -rf /usr/share/gradle/gradle-4.4/
+    echo -n  >  /etc/profile.d/gradle.sh
+    chmod +x /etc/profile.d/gradle.sh
+    echo 'export GRADLE_HOME=$HOME/gradle'  >> /etc/profile.d/gradle.sh
+    echo 'export PATH=$PATH:$GRADLE_HOME/bin' >> /etc/profile.d/gradle.sh
+    gradle
     echo "Install Ruby"
     apt-get install -y ruby
     echo "Install Python 2"
@@ -71,15 +70,24 @@ Vagrant.configure("2") do |config|
         apt-get update
         apt-get install jenkins -y
         if [ -f /var/lib/jenkins/secrets/initialAdminPassword ]; then
-          cat /var/lib/jenkins/secrets/initialAdminPassword
+          cat /var/lib/jenkins/secrets/initialAdminPassword > ~/initialAdminPassword
+
         fi
     fi
+
+    sudo apt-get update
+    sudo apt-get install -y apt-transport-https ca-certificates
+    sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+    echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" >> /etc/apt/sources.list.d/docker.list 
+    sudo apt-get update
+    sudo apt-get install -y docker-engine
+    sudo service docker start
     sudo usermod -aG docker $(whoami)
     sudo usermod -aG docker $USER
     sudo usermod -aG docker vagrant
     sudo usermod -aG docker jenkins
-    sudo groupadd docker
-	sudo gpasswd -a ${USER} docker
-	sudo service docker restart
+    sudo gpasswd -a ${USER} docker
+    sudo service docker restart
+    cat /var/lib/jenkins/secrets/initialAdminPassword
   SHELL
 end
