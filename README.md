@@ -31,7 +31,7 @@ The source for vm is in Vagrantfile
 
 There is an alterntaive docker file if you want to use a docker image
 
-Once the VM is up you can go to http://172.30.1.5:8080/ add ..
+Once the VM is up you can go to http://172.30.1.5:8080/ and : 
 
 Using the intialAdminPassword set admin password
 
