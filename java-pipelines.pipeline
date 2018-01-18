@@ -1,0 +1,45 @@
+pipeline {
+    agent none
+    stages {
+        stage('Build') {
+            agent { 
+                docker {
+                    image 'gautampachnanda/tiny-j8:latest'
+                }    
+            }
+            steps {
+                echo 'Build' 
+                sh 'if [ -d simplespringboot ]; then  rm -rf  simplespringboot; echo xxxx;  fi'
+                sh 'git clone https://github.com/gautampachnanda/simplespringboot.git'
+                sh 'cd simplespringboot && mvn clean compile'
+            }
+        }
+        stage('Test') {
+            agent { 
+                docker {
+                    image 'gautampachnanda/tiny-j8:latest'
+                }    
+            }
+            steps {
+                echo 'Test' 
+                sh 'if [ -d simplespringboot ]; then  rm -rf  simplespringboot; echo xxxx;  fi'
+                sh 'git clone https://github.com/gautampachnanda/simplespringboot.git'
+                sh 'cd simplespringboot && mvn clean test'
+            }
+        }
+        stage('Deploy') {
+            agent { 
+                docker {
+                    image 'gautampachnanda/tiny-j8:latest'
+                }    
+            }
+            steps {
+                echo 'Deploy' 
+                sh 'if [ -d simplespringboot ]; then  rm -rf  simplespringboot; echo xxxx;  fi'
+                sh 'git clone https://github.com/gautampachnanda/simplespringboot.git'
+                sh 'cd simplespringboot && mvn clean install'
+                archiveArtifacts 'simplespringboot/target/*.jar'
+            }
+        }
+    }
+}

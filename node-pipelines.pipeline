@@ -1,0 +1,37 @@
+pipeline {
+    agent none
+    stages {
+        stage('Build') {
+            agent {
+                docker { 
+                    image 'node:7-alpine' 
+                }
+           }
+            steps {
+                sh 'hostname'
+                sh 'node --version'
+            }
+        }
+        stage('Test') {
+            agent {
+                docker { 
+                    image 'node:7-alpine' 
+                }
+            } 
+            steps {
+               
+                sh 'node --version'
+            }
+        }
+        stage('Deploy') {
+            agent {
+                docker { 
+                    image 'node:7-alpine' 
+                }
+            } 
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
