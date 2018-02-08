@@ -2,6 +2,16 @@
 
 A new repo for installing jenkins with pipeline plugin example
 
+
+### Prerequisites
+* Virtual box is installed on your local box
+* You are running JDK 1.8 or above
+* Knowlege of shell commands
+* Vagrant if you are using  a local box
+
+
+
+### Using a mac
 If you are using mac you can install vagrant using
 
 ```sh
@@ -48,4 +58,21 @@ java-pipeline.pipeline
 node-pipeline.pipeline
 ```
 
+### Using a AWS
+
+## Further documentation 
+
 Further documentation is available on https://jenkins.io/doc/book/pipeline/
+
+
+## Things to change
+
+
+
+## License
+This project uses the MIT License, please see License.md for a copy
+
+
+## Acknowledgements
+
+
