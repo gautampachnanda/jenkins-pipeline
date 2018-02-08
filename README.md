@@ -59,6 +59,26 @@ node-pipeline.pipeline
 ```
 
 ### Using a AWS
+Create a Ubuntu VM
+Copy install.sh on the VM
+Jenkins should be up and running.
+
+Once the VM is up you can go to http://AWS_DNS_OR_IP_OF_VM:8080/ and : 
+
+Using the intialAdminPassword set admin password
+
+Continue the setup using the default plugins provided
+
+You can now create a new item
+
+You can create a example pipeline using the configuration are provided in files. These based on a vargant build VM using docker containers for building.
+
+
+```
+java-pipeline.pipeline
+
+node-pipeline.pipeline
+```
 
 ## Further documentation 
 
