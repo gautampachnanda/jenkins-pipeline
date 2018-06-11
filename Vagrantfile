@@ -2,7 +2,7 @@
 VM_NAME = 'jenkins-pipeline'
 VM_USER = 'vagrant'
 MAC_USER = 'gautampachnanda'
-VAGRANT_BOX = 'bento/ubuntu-16.04'
+VAGRANT_BOX = 'ubuntu/trusty64'
 
 # Host folder to sync
 HOST_PATH = '/Users/' + MAC_USER + '/' + VM_NAME
@@ -32,6 +32,14 @@ Vagrant.configure("2") do |config|
   # Install Git, gradle, jenkins, etc
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
+    sudo apt-get install nodejs -y
+    sudo apt-get remove java -y
+    sudo apt-get install -y python-software-properties debconf-utils
+    sudo add-apt-repository ppa:webupd8team/java
+    sudo apt-get update
+    sudo apt-get update
+    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
+    sudo apt-get install -y oracle-java8-installer
     apt-get install -y git sudo
     apt-get install -y build-essential wget curl less vim
     apt-get update
@@ -55,7 +63,7 @@ Vagrant.configure("2") do |config|
     apt-get update
     apt-get install -y apt-transport-https ca-certificates
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-    echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" >> /etc/apt/sources.list.d/docker.list 
+    echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" >> /etc/apt/sources.list.d/docker.list 
     apt-get update
     apt-get install -y docker-engine
     service docker start
@@ -74,17 +82,15 @@ Vagrant.configure("2") do |config|
         apt-get install jenkins -y
         if [ -f /var/lib/jenkins/secrets/initialAdminPassword ]; then
           cat /var/lib/jenkins/secrets/initialAdminPassword > ~/initialAdminPassword
-
         fi
     fi
-
-
     sudo usermod -aG docker $(whoami)
     sudo usermod -aG docker $USER
     sudo usermod -aG docker vagrant
     sudo usermod -aG docker jenkins
     sudo gpasswd -a ${USER} docker
     sudo service docker restart
+    sudo service jenkins restart
     sudo chmod 777 /var/run/docker.sock
   SHELL
 end
